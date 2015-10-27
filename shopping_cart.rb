@@ -6,6 +6,13 @@ class ShoppingCart
     @total = 0
   end
 
+  def show_contents
+    @items.each_with_index do |item, index|
+      @total+=item[:price]
+      puts "#{index.to_i+1}. Item: #{item[:name]}. Price: #{item[:price]} Gold-Galleons"
+    end
+  end
+
   def add_item(item)
     @items.push(item)
   end
@@ -19,10 +26,8 @@ class ShoppingCart
   end
 
   def checkout
-    @items.each do |item, index|
-      @total+=item.price
-      puts "#{index.to_i+1}. Item: #{item.name}. Price: #{item.price} Gold-Galleons"
-    end
+    binding.pry
+    show_contents
 
     if discount_applies?
       @total = apply_discount
