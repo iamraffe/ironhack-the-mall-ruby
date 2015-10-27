@@ -18,7 +18,7 @@ begin
 
   puts """
 What do you feel like doing?
-  1. Add item to shopping cart
+  1. View all stores
   2. Checkout & Pay
   3. Exit
   """
