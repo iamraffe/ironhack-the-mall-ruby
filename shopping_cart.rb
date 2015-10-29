@@ -7,15 +7,36 @@ class ShoppingCart
     @discount = 0
   end
 
-  def show_contents
-    @items.each_with_index do |item, index|
-      @total+=item[:price]
-      puts "#{index.to_i+1}. Item: #{item[:name]}. Price: #{item[:price]} Gold-Galleons"
+  def print_cart_contents
+    @items.each_with_index do |cart_item, index|
+      @total+=(cart_item[:item].price.to_i * cart_item[:quantity])
+      puts "#{index.to_i+1}. Item: #{cart_item[:item].name}. Price: #{cart_item[:item].price} Gold-Galleons. Quantity: #{cart_item[:quantity]}"
     end
   end
 
-  def add_item(item)
-    @items.push(item)
+  def show_contents
+    if @items.empty?
+      puts "Your cart is empty my dear"
+    else
+      print_cart_contents
+    end
+  end
+
+  def already_in_cart?(item)
+    @items.any?{|cart_items| cart_items[:item] == item}
+  end
+
+  def update_item_qty(item, quantity)
+    index = @items.index{|cart_items| cart_items[:item] == item} 
+    @items[index][:quantity]+=quantity
+  end
+
+  def add_item(item, quantity)
+    if already_in_cart?(item)
+      update_item_qty(item, quantity)
+    else
+      @items.push({item: item, quantity: quantity})
+    end
   end
 
   def discount_applies?
@@ -23,17 +44,19 @@ class ShoppingCart
   end
 
   def apply_discount
-    @total -(@total * 0.1)
+    @discount = @total -(@total * 0.1)
+  end
+
+  def reset_cart
+    @items = []
+    @total = 0
+    @discount = 0
   end
 
   def checkout
-    binding.pry
     show_contents
-
-    if discount_applies?
-      @discount = apply_discount
-    end
-
+    apply_discount if discount_applies?
     puts "Your total is: #{@total - @discount} Gold-Galleons"
+    @total - @discount
   end
 end
