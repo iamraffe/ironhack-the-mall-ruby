@@ -4,6 +4,7 @@ class ShoppingCart
   def initialize
     @items = []
     @total = 0
+    @discount = 0
   end
 
   def show_contents
@@ -30,9 +31,9 @@ class ShoppingCart
     show_contents
 
     if discount_applies?
-      @total = apply_discount
+      @discount = apply_discount
     end
 
-    puts "Your total is: #{@total} Gold-Galleons"
+    puts "Your total is: #{@total - @discount} Gold-Galleons"
   end
 end
